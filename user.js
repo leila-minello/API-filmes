@@ -1,4 +1,5 @@
 const mongoose = require('../db');
+require('dotenv').config();
 
 //esquema para criação de usuário
 const userSchema = new mongoose.Schema({
@@ -13,11 +14,11 @@ module.exports = User;
 
 //criação de usuário admin
 module.exports.createAdmin = async () => {
-    const admExiste = await User.findOne({username: "admin"});
+    const admExiste = await User.findOne({username: process.env.USERNAME_ADM});
     if (!admExiste) {
         const admUser = new User ({
-            username: "admCartaCaixa",
-            senha: "adm1902",
+            username: process.env.USERNAME_ADM,
+            senha: process.env.adm1902,
             ehAdmin: true
         });
 

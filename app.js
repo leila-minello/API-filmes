@@ -6,7 +6,13 @@ var indexRouter = require('./routes/index');
 var filmRouter = require("./routes/films");
 var authRouter = require("./routes/auth");
 
-var app = express();
+const app = express();
+
+const PORT = process.env.PORT;
+
+app.listen(PORT, () => {
+    console.log('Servidor OK!');
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
