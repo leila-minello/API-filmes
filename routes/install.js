@@ -4,6 +4,7 @@ var router = express.Router();
 var FilmModel = require("../model/films");
 var UserModel = require("../model/user");
 
+//rota para inicialização dos filmes + criação de usuário adm
 router.get('/', async (req, res) => {
     try{
         FilmModel.new("Forrest Gump", "Robert Zemeckis", 4);

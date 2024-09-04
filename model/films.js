@@ -60,6 +60,7 @@ module.exports = {
         return false;
     },
 
+    //inicializa os filmes
     inicializaFilmes() {
         films = [];
         this.new("Forrest Gump", "Robert Zemeckis", 4);
