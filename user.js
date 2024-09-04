@@ -9,3 +9,19 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
+
+module.exports.createAdmin = async () => {
+    const admExiste = await User.findOne({username: "admin"});
+    if (!admExiste) {
+        const admUser = new User ({
+            username: "admCartaCaixa",
+            senha: "adm1902",
+            ehAdmin: true
+        });
+
+        await admUser.save();
+        console.log("Admin criado com sucesso!");
+    } else {
+        console.log("Admin já existe.");
+    }
+}

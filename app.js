@@ -13,5 +13,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api', indexRouter);
 app.use("/api/films", filmRouter);
 app.use("/api/auth", authRouter);
+app.use('/install', installRouter);
 
 module.exports = app;

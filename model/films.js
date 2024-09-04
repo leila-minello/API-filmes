@@ -58,5 +58,13 @@ module.exports = {
             return true;
         }
         return false;
+    },
+
+    inicializaFilmes() {
+        films = [];
+        this.new("Forrest Gump", "Robert Zemeckis", 4);
+        this.new("The Wall", "Alan Parker", 5);
+        this.new("Stop Making Sense", "Jonathan Demme", 5);
+        this.new("Click", "Frank Coraci", 3);
     }
 };
