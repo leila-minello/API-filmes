@@ -26,6 +26,12 @@ module.exports = {
         return films;
     },
 
+    filmePag(limite, pagina) {
+        const startIndex = (pagina - 1) * limite;
+        const endIndex = startIndex + limite;
+        return films.slice(startIndex, endIndex);
+    },
+
     //lista os melhores filmes (filmes com nota 5 atribuída)
     listMelhores() {
         return films.filter(film => film.nota === 5);
