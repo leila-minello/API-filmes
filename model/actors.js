@@ -5,7 +5,7 @@ module.exports = {
 
     //criação de novo log de ator
     new(name, birthYear) {
-        let actor = { id: ids++, name: name, birthYear: birthYear, movies: [] };
+        let actor = { id: ids++, name: name, birthYear: birthYear, films: [] };
         actors.push(actor);
         return actor; 
     },
@@ -24,8 +24,8 @@ module.exports = {
     //função para associar atores a filmes
     filmeParaAtor(actorId, filmId) {
         let actor = this.getElementById(actorId);
-        if (actor && !actor.movies.includes(movieId)) {
-            actor.movies.push(movieId);
+        if (actor && !actor.films.includes(filmId)) {
+            actor.films.push(filmId);
         }
 
         return actor;

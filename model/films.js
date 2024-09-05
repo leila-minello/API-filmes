@@ -5,7 +5,7 @@ module.exports = {
 
     //criação de novo log de filme
     new(movie, director, nota = 1) {
-        let film = { id: ++ids, movie: movie, director: director, nota: nota };
+        let film = { id: ++ids, movie: movie, director: director, nota: nota, actors: [] };
         films.push(film);
         return film;
     },

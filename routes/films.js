@@ -7,7 +7,7 @@ var { verificarToken, verificaAdmin } = require("./auth");
 
 //middleware para validar os dados do filme
 let validaFilme = (req, res, next) => {
-    let { movie, director } = req.body;
+    let { movie, director, nota } = req.body;
     if (!movie || !director) {
         return res.status(400).json({ status: false, error: "O título do filme, o diretor e a nota são obrigatórios!" });
     }
@@ -44,7 +44,7 @@ router.get("/", (req, res) => {
 //rota para lista de melhores filmes (filmes com nota 5 atribuída)
 router.get("/melhores", (req, res) => {
     const melhoresFilmes = FilmModel.listMelhores();
-    res.json({status: true, film: req.film});
+    res.json({status: true, list: melhoresFilmes});
 });
 
 //middleware para procurar filme por id

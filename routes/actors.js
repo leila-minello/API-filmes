@@ -8,12 +8,14 @@ var { verificarToken, verificaAdmin } = require("./auth");
 //middleware para validar os dados do ator
 let validaAtor = (req, res, next) => {
     let { name, birthYear } = req.body;
-    if(!name || !age) {
+    const currentYear = new Date().getFullYear();
+
+    if(!name || !birthYear) {
         return res.status(400).json({ status: false, error: "O nome e ano de nascimento são obrigatórios!"});
     }
 
-    if (birthYear > 2024) {
-        return res.status(400).json({ status: false, error: "O ano de nascimento deve ser válido (de 2024 pra trás)."});
+    if (isNaN(birthYear) || birthYear > currentYear) {
+        return res.status(400).json({ status: false, error: "O ano de nascimento deve ser um valor numérico e válido (até ${currentYear})."});
     }
 
     req.name = name;
