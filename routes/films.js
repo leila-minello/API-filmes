@@ -4,16 +4,6 @@ var router = express.Router();
 var FilmModel = require("../model/films");
 var { verificarToken, verificaAdmin } = require("./auth");
 
-//middleware para procurar filme por id
-let getFilm = (req, res, next) => {
-    let id = req.params.id;
-    let obj = FilmModel.getElementById(id);
-    if (obj == null) {
-        return res.status(404).json({ status: false, error: "Filme não encontrado!" });
-    }
-    req.film = obj;
-    next();
-};
 
 //middleware para validar os dados do filme
 let validaFilme = (req, res, next) => {
@@ -26,12 +16,12 @@ let validaFilme = (req, res, next) => {
     if (director.length < 3) {
         return res.status(400).json({ status: false, error: "O nome do diretor deve ter mais de 3 caracteres." });
     }
-
+    
     //especificação para nota
     if (nota < 1 || nota > 5) {
         return res.status(400).json({status: false, error: "A nota deve ser um valor entre 1 e 5."})
     }
-
+    
     req.movie = movie;
     req.director = director;
     req.nota = nota;
@@ -43,10 +33,10 @@ router.use(verificarToken);
 //rota para listar filmes com paginação
 router.get("/", (req, res) => {
     let { limite = 5, pagina = 1 } = req.query;
-
+    
     limite = Math.min(Math.max(parseInt(limite), 1), 10);
     pagina = Math.max(parseInt(pagina), 1);
-
+    
     const filmes = FilmModel.listPaginated(limite, pagina);
     res.json({ status: true, list: filmes });
 });
@@ -56,6 +46,17 @@ router.get("/melhores", (req, res) => {
     const melhoresFilmes = FilmModel.listMelhores();
     res.json({status: true, film: req.film});
 });
+
+//middleware para procurar filme por id
+let getFilm = (req, res, next) => {
+    let id = req.params.id;
+    let obj = FilmModel.getElementById(id);
+    if (obj == null) {
+        return res.status(404).json({ status: false, error: "Filme não encontrado!" });
+    }
+    req.film = obj;
+    next();
+};
 
 //rota para pesquisar e obter filme por ID
 router.get("/:id", getFilm, (req, res) => {
