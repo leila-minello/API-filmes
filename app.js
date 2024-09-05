@@ -4,7 +4,8 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var filmRouter = require("./routes/films");
-var authRouter = require("./routes/auth");
+const { router: authRouter } = require('./routes/auth');
+var installRouter = require('./routes/install');
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.use('/api', indexRouter);
 app.use("/api/films", filmRouter);
 app.use("/api/auth", authRouter);
 app.use('/install', installRouter);
+
 
 module.exports = app;

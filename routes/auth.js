@@ -158,4 +158,8 @@ function verificaAdmin(req, res, next) {
     next();
 }
 
-module.exports = { router, verificarToken, verificaAdmin };
+module.exports = {
+    router,
+    verificarToken,
+    verificaAdmin
+};
