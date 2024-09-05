@@ -69,7 +69,7 @@ router.delete("/:id", verificaAdmin, getActor, (req, res) => {
 });
 
 //rota para associar um filme a um ator
-router.post("/:actorId/filmes/:filmId", verificaAdmin, (req, res) => {
+router.post("/:actorId/films/:filmId", verificaAdmin, (req, res) => {
 
     let actor = ActorModel.filmeParaAtor(req.params.actorId, req.params.filmId);
 

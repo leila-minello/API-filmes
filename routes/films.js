@@ -50,11 +50,11 @@ router.get("/melhores", (req, res) => {
 //middleware para procurar filme por id
 let getFilm = (req, res, next) => {
     let id = req.params.id;
-    let obj = FilmModel.getElementById(id);
-    if (obj == null) {
+    let film = FilmModel.getElementById(id);
+    if (film == null) {
         return res.status(404).json({ status: false, error: "Filme não encontrado!" });
     }
-    req.film = obj;
+    req.film = film;
     next();
 };
 
