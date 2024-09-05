@@ -6,7 +6,7 @@ var FilmModel = require("../model/films");
 var ActorModel = require("../model/actors");
 var { verificarToken, verificaAdmin } = require("./auth");
 
-// Middleware para validar dados do oscar
+//middleware para validar os dados do oscar
 let validaOscar = (req, res, next) => {
     let { nomePremio, anoRecebimento } = req.body;
     const currentYear = new Date().getFullYear();
@@ -26,7 +26,7 @@ let validaOscar = (req, res, next) => {
 
 router.use(verificarToken);
 
-// Rota para listar os prêmios usando paginação
+//rota para listar prêmios utilizando paginação
 router.get("/", async (req, res) => {
     let { limite = 5, pagina = 1 } = req.query;
 
@@ -41,7 +41,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-// Middleware para procurar prêmio por id
+//middleware pra procurar prêmio por id
 let getOscar = async (req, res, next) => {
     let id = req.params.id;
     try {
@@ -56,12 +56,12 @@ let getOscar = async (req, res, next) => {
     }
 }
 
-// Rota para pesquisar e obter prêmio por ID
+//rota pra pesquisar e obter prêmio por ID
 router.get("/:id", getOscar, (req, res) => {
     res.json({ status: true, oscar: req.oscar });
 });
 
-// Rota para criar novo prêmio (somente para admins)
+//rota para criar novo prêmio (somente para admins)
 router.post("/", verificaAdmin, validaOscar, async (req, res) => {
     try {
         const oscar = await OscarModel.novoOscar(req.nomePremio, req.anoRecebimento);
@@ -71,7 +71,7 @@ router.post("/", verificaAdmin, validaOscar, async (req, res) => {
     }
 });
 
-// Rota para atualizar um prêmio existente
+//rota para atualizar um prêmio existente
 router.put("/:id", verificaAdmin, validaOscar, getOscar, async (req, res) => {
     try {
         const oscar = await OscarModel.attOscar(req.params.id, req.nomePremio, req.anoRecebimento);
@@ -81,7 +81,7 @@ router.put("/:id", verificaAdmin, validaOscar, getOscar, async (req, res) => {
     }
 });
 
-// Rota para deletar prêmio por ID
+//rota para deletar prêmio por ID
 router.delete("/:id", verificaAdmin, getOscar, async (req, res) => {
     try {
         await OscarModel.deletaOscar(req.params.id);
@@ -91,7 +91,7 @@ router.delete("/:id", verificaAdmin, getOscar, async (req, res) => {
     }
 });
 
-// Rota para associar um filme ao oscar
+//rota para associar um filme ao oscar
 router.post("/:oscarId/films/:filmId", verificaAdmin, async (req, res) => {
     try {
         let oscar = await OscarModel.filmeParaOscar(req.params.oscarId, req.params.filmId);
@@ -110,7 +110,7 @@ router.post("/:oscarId/films/:filmId", verificaAdmin, async (req, res) => {
     }
 });
 
-// Rota para associar um ator ao oscar
+//rota para associar um ator ao oscar
 router.post("/:oscarId/actors/:actorId", verificaAdmin, async (req, res) => {
     try {
         let oscar = await OscarModel.atorParaOscar(req.params.oscarId, req.params.actorId);

@@ -4,7 +4,6 @@ var router = express.Router();
 var FilmModel = require("../model/films");
 var { verificarToken, verificaAdmin } = require("./auth");
 
-
 //middleware para validar os dados do filme
 let validaFilme = (req, res, next) => {
     let { movie, director, nota } = req.body;
@@ -31,52 +30,78 @@ let validaFilme = (req, res, next) => {
 router.use(verificarToken);
 
 //rota para listar filmes com paginação
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     let { limite = 5, pagina = 1 } = req.query;
     
     limite = Math.min(Math.max(parseInt(limite), 1), 10);
     pagina = Math.max(parseInt(pagina), 1);
-    
-    const filmes = FilmModel.listaPag(limite, pagina);
-    res.json({ status: true, list: filmes });
+
+    try {
+        const filmes = await FilmModel.listaPag(limite, pagina);
+        res.json({ status: true, list: filmes });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
 //rota para lista de melhores filmes (filmes com nota 5 atribuída)
-router.get("/melhores", (req, res) => {
-    const melhoresFilmes = FilmModel.listaMelhores();
-    res.json({status: true, list: melhoresFilmes});
+router.get("/melhores", async (req, res) => {
+    try {
+        const melhoresFilmes = await FilmModel.listaMelhores();
+        res.json({ status: true, list: melhoresFilmes });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
 //middleware para procurar filme por id
-let getFilm = (req, res, next) => {
+let getFilm = async (req, res, next) => {
     let id = req.params.id;
-    let film = FilmModel.getFilmById(id);
-    if (film == null) {
-        return res.status(404).json({ status: false, error: "Filme não encontrado!" });
+    try {
+        let film = await FilmModel.getFilmById(id);
+        if (!film) {
+            return res.status(404).json({ status: false, error: "Filme não encontrado!" });
+        }
+        req.film = film;
+        next();
+    } catch (error) {
+        return res.status(500).json({ status: false, error: error.message });
     }
-    req.film = film;
-    next();
 };
 
 //rota para pesquisar e obter filme por ID
-router.get("/:id", verificarToken, getFilm, (req, res) => {
+router.get("/:id", getFilm, (req, res) => {
     res.json({ status: true, film: req.film });
 });
 
 //rota para criar um novo filme (somente para admins)
-router.post("/", verificaAdmin, validaFilme, (req, res) => {
-    res.json({ status: true, film: FilmModel.novoFilme(req.movie, req.director, req.nota) });
+router.post("/", verificaAdmin, validaFilme, async (req, res) => {
+    try {
+        const novoFilme = await FilmModel.novoFilme(req.movie, req.director, req.nota);
+        res.json({ status: true, film: novoFilme });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
 //rota para atualizar dados de um filme já existente
-router.put("/:id", verificaAdmin, validaFilme, getFilm, (req, res) => {
-    res.json({ status: true, film: FilmModel.attFilme(req.film.id, req.movie, req.director, req.nota) });
+router.put("/:id", verificaAdmin, validaFilme, getFilm, async (req, res) => {
+    try {
+        const filmeAtualizado = await FilmModel.attFilme(req.film.id, req.movie, req.director, req.nota);
+        res.json({ status: true, film: filmeAtualizado });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
 //rota para deletar um filme pelo seu ID
-router.delete("/:id", verificaAdmin, getFilm, (req, res) => {
-    FilmModel.deletaFilme(req.params.id);
-    res.json({ status: true, oldFilm: req.film });
+router.delete("/:id", verificaAdmin, getFilm, async (req, res) => {
+    try {
+        await FilmModel.deletaFilme(req.params.id);
+        res.json({ status: true, oldFilm: req.film });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
 module.exports = router;

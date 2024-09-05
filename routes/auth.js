@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ message: 'LOG DE FILMES ABERTO', id: user._id, ehAdmin: user.ehAdmin }, chave, { expiresIn: '1h' });
-        res.json({ status: true, token: token });
+        res.json({ status: true, message: 'LOG DE FILMES ABERTO', token: token });
 
         } catch (error) {
             res.status(500).json({ status: false, error: 'Erro na autenticação, tente novamente.' });
