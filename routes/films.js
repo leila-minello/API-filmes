@@ -59,7 +59,7 @@ let getFilm = (req, res, next) => {
 };
 
 //rota para pesquisar e obter filme por ID
-router.get("/:id", getFilm, (req, res) => {
+router.get("/:id", verificarToken, getFilm, (req, res) => {
     res.json({ status: true, film: req.film });
 });
 
