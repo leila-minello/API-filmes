@@ -22,10 +22,12 @@ let validaFilme = (req, res, next) => {
         return res.status(400).json({ status: false, error: "O título do filme, o diretor e a nota são obrigatórios!" });
     }
 
+    //especificação para nome do diretor
     if (director.length < 3) {
         return res.status(400).json({ status: false, error: "O nome do diretor deve ter mais de 3 caracteres." });
     }
 
+    //especificação para nota
     if (nota < 1 || nota > 5) {
         return res.status(400).json({status: false, error: "A nota deve ser um valor entre 1 e 5."})
     }
@@ -42,7 +44,7 @@ router.use(verificarToken);
 router.get("/", (req, res) => {
     let { limite = 5, pagina = 1 } = req.query;
 
-    limite = Math.min(Math.max(parseInt(limite), 1), 20);
+    limite = Math.min(Math.max(parseInt(limite), 1), 10);
     pagina = Math.max(parseInt(pagina), 1);
 
     const filmes = FilmModel.listPaginated(limite, pagina);
@@ -55,23 +57,22 @@ router.get("/melhores", (req, res) => {
     res.json({status: true, film: req.film});
 });
 
-
-//rota para obter filme por ID
+//rota para pesquisar e obter filme por ID
 router.get("/:id", getFilm, (req, res) => {
     res.json({ status: true, film: req.film });
 });
 
-//rota para criar novo filme (somente admins)
+//rota para criar um novo filme (somente para admins)
 router.post("/", verificaAdmin, validaFilme, (req, res) => {
     res.json({ status: true, film: FilmModel.new(req.movie, req.director, req.nota) });
 });
 
-//rota para atualizar um filme existente
+//rota para atualizar dados de um filme já existente
 router.put("/:id", verificaAdmin, validaFilme, getFilm, (req, res) => {
     res.json({ status: true, film: FilmModel.update(req.film.id, req.movie, req.director, req.nota) });
 });
 
-//rota para deletar um filme pelo ID
+//rota para deletar um filme pelo seu ID
 router.delete("/:id", verificaAdmin, getFilm, (req, res) => {
     FilmModel.delete(req.params.id);
     res.json({ status: true, oldFilm: req.film });
