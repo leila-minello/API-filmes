@@ -15,7 +15,7 @@ let validaAtor = (req, res, next) => {
     }
 
     if (isNaN(birthYear) || birthYear > currentYear) {
-        return res.status(400).json({ status: false, error: "O ano de nascimento deve ser um valor numérico e válido (até ${currentYear})."});
+        return res.status(400).json({ status: false, error: `O ano de recebimento deve ser válido (até ${currentYear}).` });
     }
 
     req.name = name;

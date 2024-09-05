@@ -5,7 +5,7 @@ module.exports = {
 
     //criação de um prêmio novo
     new(nomePremio, anoRecebimento) {
-        let oscar = { id: ids++, nomePremio: nomePremio, anoRecebimento: anoRecebimento, films: [], actors: []};
+        let oscar = { id: ++ids, nomePremio: nomePremio, anoRecebimento: anoRecebimento, films: [], actors: []};
         oscars.push(oscar);
         return oscar;
     },
@@ -41,7 +41,7 @@ module.exports = {
         return oscars;
     },
 
-    oscarPag(limite, pagina) {
+    listPaginated(limite, pagina) {
         const startIndex = (pagina - 1) * limite;
         const endIndex = startIndex + limite;
         return oscars.slice(startIndex, endIndex);

@@ -26,7 +26,7 @@ module.exports = {
         return films;
     },
 
-    filmePag(limite, pagina) {
+    listPaginated(limite, pagina) {
         const startIndex = (pagina - 1) * limite;
         const endIndex = startIndex + limite;
         return films.slice(startIndex, endIndex);

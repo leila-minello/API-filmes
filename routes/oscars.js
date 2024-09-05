@@ -15,9 +15,10 @@ let validaOscar = (req, res, next) => {
         return res.status(400).json({ status: false, error: "O nome do prêmio e o ano de recebimento são obrigatórios!"});
     }
 
-    if(isNaN(anoRecebimento) || anoRecebimento > currentYear) {
-        return res.status(400).json({ status: false, error: "O ano de recebimento deve ser válido (até ${currentYear})."});
+    if (isNaN(anoRecebimento) || anoRecebimento > currentYear) {
+        return res.status(400).json({ status: false, error: `O ano de recebimento deve ser válido (até ${currentYear}).` });
     }
+    
 
     req.nomePremio = nomePremio;
     req.anoRecebimento = anoRecebimento
@@ -60,8 +61,8 @@ router.post("/", verificaAdmin, validaOscar, (req, res) => {
 });
 
 //rota para atualizar um prêmio existente
-router.put("/:id", verificaAdmin, getOscar, (req, res) => {
-    res.json({ status: true, oscar: OscarModel.update(req.params.id, req.nomePremio, req.anoRecebimento)});
+router.put("/:id", verificaAdmin, validaOscar, getOscar, (req, res) => {
+    res.json({ status: true, oscar: OscarModel.update(req.params.id, req.nomePremio, req.anoRecebimento) });
 });
 
 //rota para deletar prêmio por ID
@@ -95,7 +96,7 @@ router.post("/:oscarId/films/:filmId", verificaAdmin, (req, res) => {
 //rota para associar um ator ao oscar
 router.post("/:oscarId/actors/:actorId", verificaAdmin, (req, res) => {
 
-    let oscar = OscarModel.atorPraOscar(req.params.oscarId, req.params,actorId);
+    let oscar = OscarModel.atorPraOscar(req.params.oscarId, req.params.actorId);
     if (!oscar) {
         return res.status(404).json({ status: false, error: "Oscar não encontrado!"});
     } 
@@ -105,7 +106,7 @@ router.post("/:oscarId/actors/:actorId", verificaAdmin, (req, res) => {
         return res.status(404).json({ status: false, error: "Ator não encontrado!"});
     }
 
-    actors.oscars = actors.oscars || [];
+    actor.oscars = actor.oscars || [];
 
     if (!actor.oscars.includes(req.params.oscarId)) {
         actor.oscars.push(req.params.oscarId);

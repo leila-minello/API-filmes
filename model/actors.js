@@ -36,7 +36,7 @@ module.exports = {
         return actors;
     },
 
-    atorPag(limite, pagina) {
+    listPaginated(limite, pagina) {
         const startIndex = (pagina - 1) * limite;
         const endIndex = startIndex + limite;
         return actors.slice(startIndex, endIndex);
