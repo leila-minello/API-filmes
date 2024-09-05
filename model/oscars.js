@@ -16,7 +16,9 @@ oscarSchema.statics = {
       const oscar = new this({ nomePremio, anoRecebimento });
       await oscar.save();
       return oscar;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao criar Oscar: ' + error.message);
     }
   },
@@ -29,7 +31,9 @@ oscarSchema.statics = {
         throw new Error('Oscar não encontrado');
       }
       return oscar;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao atualizar Oscar: ' + error.message);
     }
   },
@@ -43,7 +47,9 @@ oscarSchema.statics = {
         await oscar.save();
       }
       return oscar;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao associar filme ao Oscar: ' + error.message);
     }
   },
@@ -57,7 +63,9 @@ oscarSchema.statics = {
         await oscar.save();
       }
       return oscar;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao associar ator ao Oscar: ' + error.message);
     }
   },
@@ -67,7 +75,9 @@ oscarSchema.statics = {
     try {
       const oscars = await this.find().populate('films').populate('actors');
       return oscars;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao listar Oscars: ' + error.message);
     }
   },
@@ -81,7 +91,9 @@ oscarSchema.statics = {
         .populate('films')
         .populate('actors');
       return oscars;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao listar Oscars paginados: ' + error.message);
     }
   },
@@ -94,7 +106,9 @@ oscarSchema.statics = {
         throw new Error('Oscar não encontrado');
       }
       return oscar;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao buscar Oscar por ID: ' + error.message);
     }
   },
@@ -104,7 +118,9 @@ oscarSchema.statics = {
     try {
       const result = await this.findByIdAndDelete(id);
       return !!result;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao deletar Oscar: ' + error.message);
     }
   }

@@ -15,8 +15,9 @@ actorSchema.statics = {
       const actor = new this({ name, birthYear });
       await actor.save();
       return actor;
+
     } catch (error) {
-      throw new Error('Erro ao criar ator: ' + error.message);
+        throw new Error('Erro ao criar registro do ator!: ' + error.message);
     }
   },
 
@@ -25,11 +26,13 @@ actorSchema.statics = {
     try {
       const actor = await this.findByIdAndUpdate(id, { name, birthYear }, { new: true });
       if (!actor) {
-        throw new Error('Ator não encontrado');
+        throw new Error('Ator não encontrado.');
       }
       return actor;
-    } catch (error) {
-      throw new Error('Erro ao atualizar ator: ' + error.message);
+      } 
+    
+      catch (error) {
+        throw new Error('Erro ao atualizar dados do ator!: ' + error.message);
     }
   },
 
@@ -42,8 +45,10 @@ actorSchema.statics = {
         await actor.save();
       }
       return actor;
-    } catch (error) {
-      throw new Error('Erro ao associar filme ao ator: ' + error.message);
+      } 
+      
+      catch (error) {
+        throw new Error('Erro ao associar filme ao ator!: ' + error.message);
     }
   },
 
@@ -52,8 +57,10 @@ actorSchema.statics = {
     try {
       const actors = await this.find();
       return actors;
-    } catch (error) {
-      throw new Error('Erro ao listar atores: ' + error.message);
+    } 
+    
+    catch (error) {
+      throw new Error('Erro ao listar os atores!: ' + error.message);
     }
   },
 
@@ -64,8 +71,10 @@ actorSchema.statics = {
         .skip((pagina - 1) * limite)
         .limit(limite);
       return actors;
-    } catch (error) {
-      throw new Error('Erro ao listar atores paginados: ' + error.message);
+    } 
+    
+    catch (error) {
+      throw new Error('Erro ao listar os atores por paginação!: ' + error.message);
     }
   },
 
@@ -74,11 +83,13 @@ actorSchema.statics = {
     try {
       const actor = await this.findById(id);
       if (!actor) {
-        throw new Error('Ator não encontrado');
+        throw new Error('Ator não encontrado.');
       }
       return actor;
-    } catch (error) {
-      throw new Error('Erro ao buscar ator por ID: ' + error.message);
+    } 
+    
+    catch (error) {
+      throw new Error('Erro ao buscar ator pelo ID!: ' + error.message);
     }
   },
 
@@ -87,22 +98,12 @@ actorSchema.statics = {
     try {
       const result = await this.findByIdAndDelete(id);
       return !!result; 
-    } catch (error) {
-      throw new Error('Erro ao deletar ator: ' + error.message);
+    } 
+    
+    catch (error) {
+      throw new Error('Erro ao deletar ator!: ' + error.message);
     }
-  },
-
-  /*inicializa com alguns atores
-  async inicializaAtor() {
-    try {
-      await this.deleteMany({}); 
-      await this.novoAtor("Emma Stone", 1988);
-      await this.novoAtor("Bob Geldof", 1951);
-      await this.novoAtor("Tom Hanks", 1956);
-    } catch (error) {
-      throw new Error('Erro ao inicializar filmes: ' + error.message);
-    }
-  }*/
+  }
 };
 
 const ActorModel = mongoose.model('Actor', actorSchema);

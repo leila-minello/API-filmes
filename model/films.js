@@ -13,12 +13,13 @@ filmSchema.statics = {
 
   //criação de novo filme
   async novoFilme(movie, director, nota) {
-
     try {
       const film = new this({ movie, director, nota });
       await film.save();
       return film;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao criar filme: ' + error.message);
     }
   },
@@ -31,7 +32,9 @@ filmSchema.statics = {
         throw new Error('Filme não encontrado');
       }
       return film;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao atualizar filme: ' + error.message);
     }
   },
@@ -41,7 +44,9 @@ filmSchema.statics = {
     try {
       const films = await this.find();
       return films;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao listar filmes: ' + error.message);
     }
   },
@@ -53,7 +58,9 @@ filmSchema.statics = {
         .skip((pagina - 1) * limite)
         .limit(limite);
       return films;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao listar filmes paginados: ' + error.message);
     }
   },
@@ -63,7 +70,9 @@ filmSchema.statics = {
     try {
       const films = await this.find({ nota: 5 });
       return films;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao listar melhores filmes: ' + error.message);
     }
   },
@@ -76,7 +85,9 @@ filmSchema.statics = {
         throw new Error('Filme não encontrado');
       }
       return film;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao buscar filme por ID: ' + error.message);
     }
   },
@@ -86,7 +97,9 @@ filmSchema.statics = {
     try {
       const result = await this.findByIdAndDelete(id);
       return !!result;
-    } catch (error) {
+    } 
+    
+    catch (error) {
       throw new Error('Erro ao deletar filme: ' + error.message);
     }
   }
