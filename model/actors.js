@@ -36,6 +36,12 @@ module.exports = {
         return actors;
     },
 
+    listPaginated(limite, pagina) {
+        const startIndex = (pagina - 1) * limite;
+        const endIndex = startIndex + limite;
+        return actors.slice(startIndex, endIndex);
+    },
+
     //acha ator por ID
     getElementById(id) {
         let pos = this.getPositionById(id);
