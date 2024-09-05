@@ -1,4 +1,5 @@
 const mongoose = require('../db');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 //esquema para criação de usuário
