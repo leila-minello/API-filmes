@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 var express = require('express');
 var path = require('path');
 require('dotenv').config();
@@ -22,6 +23,13 @@ app.use('/api', indexRouter);
 app.use("/api/films", filmRouter);
 app.use("/api/auth", authRouter);
 app.use('/install', installRouter);
+
+
+mongoose.connect('mongodb://localhost:27017/mydatabase', {
+  serverSelectionTimeoutMS: 30000
+})
+  .then(() => console.log('Conectado ao MongoDB com sucesso'))
+  .catch(err => console.error('Erro ao conectar ao MongoDB', err));
 
 
 module.exports = app;
