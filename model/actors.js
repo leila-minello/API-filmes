@@ -4,18 +4,18 @@ let actors = [];
 module.exports = {
 
     //criação de novo log de ator
-    new(name, birth) {
-        let actor = { id: ids++, name: name, birth: birth, movies: [] };
+    new(name, birthYear) {
+        let actor = { id: ids++, name: name, birthYear: birthYear, movies: [] };
         actors.push(actor);
         return actor; 
     },
 
     //atualização dos dados do ator
-    update(id, name, birth) {
+    update(id, name, birthYear) {
         let pos = this.getPositionById(id);
         if (pos >= 0 ) {
             actors[pos].name = name;
-            actors[pos].birth = birth;
+            actors[pos].birthYear = birthYear;
         }
 
         return actors[pos];
