@@ -89,20 +89,7 @@ filmSchema.statics = {
     } catch (error) {
       throw new Error('Erro ao deletar filme: ' + error.message);
     }
-  },
-
-  /*inicializa o programa com alguns filmes
-  async inicializaFilme() {
-    try {
-      await this.deleteMany({}); 
-      await this.novoFilme("Forrest Gump", "Robert Zemeckis", 4);
-      await this.novoFilme("The Wall", "Alan Parker", 5);
-      await this.novoFilme("Stop Making Sense", "Jonathan Demme", 5);
-      await this.novoFilme("Click", "Frank Coraci", 3);
-    } catch (error) {
-      throw new Error('Erro ao inicializar filmes: ' + error.message);
-    }
-  }*/
+  }
 };
 
 const FilmModel = mongoose.model('Film', filmSchema);

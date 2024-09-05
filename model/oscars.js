@@ -107,19 +107,7 @@ oscarSchema.statics = {
     } catch (error) {
       throw new Error('Erro ao deletar Oscar: ' + error.message);
     }
-  },
-
-  /* Inicializar a coleção de Oscars com alguns registros
-  async inicializaOscars() {
-    try {
-      await this.deleteMany({});
-      await this.novoOscar("Melhor Filme", 2023);
-      await this.novoOscar("Melhor Ator", 2023);
-      await this.novoOscar("Melhor Diretor", 2023);
-    } catch (error) {
-      throw new Error('Erro ao inicializar Oscars: ' + error.message);
-    }
-  }*/
+  }
 };
 
 const OscarModel = mongoose.model('Oscar', oscarSchema);
