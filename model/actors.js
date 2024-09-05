@@ -92,7 +92,7 @@ actorSchema.statics = {
     }
   },
 
-  //inicializa com alguns atores
+  /*inicializa com alguns atores
   async inicializaAtor() {
     try {
       await this.deleteMany({}); 
@@ -102,7 +102,7 @@ actorSchema.statics = {
     } catch (error) {
       throw new Error('Erro ao inicializar filmes: ' + error.message);
     }
-  }
+  }*/
 };
 
 const ActorModel = mongoose.model('Actor', actorSchema);

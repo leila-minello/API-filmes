@@ -91,7 +91,7 @@ filmSchema.statics = {
     }
   },
 
-  //inicializa o programa com alguns filmes
+  /*inicializa o programa com alguns filmes
   async inicializaFilme() {
     try {
       await this.deleteMany({}); 
@@ -102,7 +102,7 @@ filmSchema.statics = {
     } catch (error) {
       throw new Error('Erro ao inicializar filmes: ' + error.message);
     }
-  }
+  }*/
 };
 
 const FilmModel = mongoose.model('Film', filmSchema);

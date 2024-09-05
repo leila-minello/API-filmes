@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Esquema para o modelo Oscar
+//esquema para criação de prêmios
 const oscarSchema = new mongoose.Schema({
   nomePremio: { type: String, required: true },
   anoRecebimento: { type: Number, required: true },
@@ -10,7 +10,7 @@ const oscarSchema = new mongoose.Schema({
 
 oscarSchema.statics = {
 
-  // Criação de um novo Oscar
+  //criação de novo prêmio
   async novoOscar(nomePremio, anoRecebimento) {
     try {
       const oscar = new this({ nomePremio, anoRecebimento });
@@ -21,7 +21,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Atualização dos dados de um Oscar
+  //atualização dos dados de um prêmio
   async attOscar(id, nomePremio, anoRecebimento) {
     try {
       const oscar = await this.findByIdAndUpdate(id, { nomePremio, anoRecebimento }, { new: true });
@@ -34,7 +34,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Associar um filme a um Oscar
+  //associar um filme a um prêmio
   async filmeParaOscar(oscarId, filmId) {
     try {
       const oscar = await this.findById(oscarId);
@@ -48,7 +48,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Associar um ator a um Oscar
+  //associar um ator a um prêmio
   async atorParaOscar(oscarId, actorId) {
     try {
       const oscar = await this.findById(oscarId);
@@ -62,7 +62,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Listar todos os Oscars
+  //listar todos os prêmios
   async lista() {
     try {
       const oscars = await this.find().populate('films').populate('actors');
@@ -72,7 +72,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Listar Oscars com paginação
+  //listar prêmio utilizando paginação
   async listaPaginada(limite, pagina) {
     try {
       const oscars = await this.find()
@@ -86,7 +86,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Buscar um Oscar por ID
+  //buscar um prêmio por ID
   async getOscarById(id) {
     try {
       const oscar = await this.findById(id).populate('films').populate('actors');
@@ -99,7 +99,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Deletar um Oscar pelo ID
+  //deletar um prêmio pelo ID
   async deletaOscar(id) {
     try {
       const result = await this.findByIdAndDelete(id);
@@ -109,7 +109,7 @@ oscarSchema.statics = {
     }
   },
 
-  // Inicializar a coleção de Oscars com alguns registros
+  /* Inicializar a coleção de Oscars com alguns registros
   async inicializaOscars() {
     try {
       await this.deleteMany({});
@@ -119,7 +119,7 @@ oscarSchema.statics = {
     } catch (error) {
       throw new Error('Erro ao inicializar Oscars: ' + error.message);
     }
-  }
+  }*/
 };
 
 const OscarModel = mongoose.model('Oscar', oscarSchema);
