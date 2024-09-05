@@ -5,6 +5,8 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var filmRouter = require("./routes/films");
+var actorRouter = require("./routes/actors");
+var oscarRouter = require("./routes/oscars");
 const { router: authRouter } = require('./routes/auth');
 var installRouter = require('./routes/install');
 
@@ -21,6 +23,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api', indexRouter);
 app.use("/api/films", filmRouter);
+app.use("/api/actors", actorRouter);
+app.use("/api/oscars", oscarRouter);
 app.use("/api/auth", authRouter);
 app.use('/install', installRouter);
 

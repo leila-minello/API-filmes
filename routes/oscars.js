@@ -6,113 +6,127 @@ var FilmModel = require("../model/films");
 var ActorModel = require("../model/actors");
 var { verificarToken, verificaAdmin } = require("./auth");
 
-//middleware para validar dados do oscar
+// Middleware para validar dados do oscar
 let validaOscar = (req, res, next) => {
     let { nomePremio, anoRecebimento } = req.body;
     const currentYear = new Date().getFullYear();
 
     if (!nomePremio || !anoRecebimento) {
-        return res.status(400).json({ status: false, error: "O nome do prêmio e o ano de recebimento são obrigatórios!"});
+        return res.status(400).json({ status: false, error: "O nome do prêmio e o ano de recebimento são obrigatórios!" });
     }
 
     if (isNaN(anoRecebimento) || anoRecebimento > currentYear) {
         return res.status(400).json({ status: false, error: `O ano de recebimento deve ser válido (até ${currentYear}).` });
     }
-    
 
     req.nomePremio = nomePremio;
-    req.anoRecebimento = anoRecebimento
+    req.anoRecebimento = anoRecebimento;
     next();
 }
 
 router.use(verificarToken);
 
-//rota para listar os prêmios usando paginação
-router.get("/", (req, res) => {
+// Rota para listar os prêmios usando paginação
+router.get("/", async (req, res) => {
     let { limite = 5, pagina = 1 } = req.query;
 
     limite = Math.min(Math.max(parseInt(limite), 1), 10);
     pagina = Math.max(parseInt(pagina), 1);
 
-    const oscars = OscarModel.listPaginated(limite, pagina);
-    res.json({ status: true, list: oscars });
+    try {
+        const oscars = await OscarModel.listaPaginada(limite, pagina);
+        res.json({ status: true, list: oscars });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
-//middleware para procurar prêmio por id
-let getOscar = (req, res, next) => {
+// Middleware para procurar prêmio por id
+let getOscar = async (req, res, next) => {
     let id = req.params.id;
-    let oscar = OscarModel.getElementById(id);
-    if (oscar == null) {
-        return res.status(400).json({ status: false, error: "Oscar não encontrado!"});
+    try {
+        let oscar = await OscarModel.getOscarById(id);
+        if (!oscar) {
+            return res.status(404).json({ status: false, error: "Oscar não encontrado!" });
+        }
+        req.oscar = oscar;
+        next();
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
     }
-
-    req.oscar = oscar;
-    next();
 }
 
-//rota para pesquisar e obter prêmio por ID
-router.get("/:id", getOscar, (req, res)  => {
-    res.json({ status: true, oscar: req.oscar});
+// Rota para pesquisar e obter prêmio por ID
+router.get("/:id", getOscar, (req, res) => {
+    res.json({ status: true, oscar: req.oscar });
 });
 
-//rota para criar novo prêmio (somente para admins)
-router.post("/", verificaAdmin, validaOscar, (req, res) => {
-    res.json({ status: true, oscar: OscarModel.new(req.nomePremio, req.anoRecebimento)});
+// Rota para criar novo prêmio (somente para admins)
+router.post("/", verificaAdmin, validaOscar, async (req, res) => {
+    try {
+        const oscar = await OscarModel.novoOscar(req.nomePremio, req.anoRecebimento);
+        res.json({ status: true, oscar });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
-//rota para atualizar um prêmio existente
-router.put("/:id", verificaAdmin, validaOscar, getOscar, (req, res) => {
-    res.json({ status: true, oscar: OscarModel.update(req.params.id, req.nomePremio, req.anoRecebimento) });
+// Rota para atualizar um prêmio existente
+router.put("/:id", verificaAdmin, validaOscar, getOscar, async (req, res) => {
+    try {
+        const oscar = await OscarModel.attOscar(req.params.id, req.nomePremio, req.anoRecebimento);
+        res.json({ status: true, oscar });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
-//rota para deletar prêmio por ID
-router.delete("/:id", verificaAdmin, getOscar, (req, res) => {
-    OscarModel.delete(req.params.id);
-    res.json({ status: true, oldOscar: req.oscar });
+// Rota para deletar prêmio por ID
+router.delete("/:id", verificaAdmin, getOscar, async (req, res) => {
+    try {
+        await OscarModel.deletaOscar(req.params.id);
+        res.json({ status: true, oldOscar: req.oscar });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
 });
 
-//rota para associar um filme ao oscar
-router.post("/:oscarId/films/:filmId", verificaAdmin, (req, res) => {
+// Rota para associar um filme ao oscar
+router.post("/:oscarId/films/:filmId", verificaAdmin, async (req, res) => {
+    try {
+        let oscar = await OscarModel.filmeParaOscar(req.params.oscarId, req.params.filmId);
+        if (!oscar) {
+            return res.status(404).json({ status: false, error: "Oscar não encontrado!" });
+        }
 
-    let oscar = OscarModel.filmePraOscar(req.params.oscarId, req.params.filmId);
-    if(!oscar) {
-        return res.status(404).json({ status: false, error: "Oscar não encontrado!"});
+        let film = await FilmModel.getFilmById(req.params.filmId);
+        if (!film) {
+            return res.status(404).json({ status: false, error: "Filme não encontrado!" });
+        }
+
+        res.json({ status: true, oscar });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
     }
-
-    let film = FilmModel.getElementById(req.params.filmId);
-    if(!film) {
-        return res.status(404).json({ status: false, error: "Filme não encontrado!"});
-    }
-
-    film.oscars = film.oscars || [];
-
-    if (!film.oscars.includes(req.params.oscarId)) {
-        film.oscars.push(req.params.oscarId);
-    }
-
-    res.json({ status: true, oscar });
 });
 
-//rota para associar um ator ao oscar
-router.post("/:oscarId/actors/:actorId", verificaAdmin, (req, res) => {
+// Rota para associar um ator ao oscar
+router.post("/:oscarId/actors/:actorId", verificaAdmin, async (req, res) => {
+    try {
+        let oscar = await OscarModel.atorParaOscar(req.params.oscarId, req.params.actorId);
+        if (!oscar) {
+            return res.status(404).json({ status: false, error: "Oscar não encontrado!" });
+        }
 
-    let oscar = OscarModel.atorPraOscar(req.params.oscarId, req.params.actorId);
-    if (!oscar) {
-        return res.status(404).json({ status: false, error: "Oscar não encontrado!"});
-    } 
+        let actor = await ActorModel.getActorById(req.params.actorId);
+        if (!actor) {
+            return res.status(404).json({ status: false, error: "Ator não encontrado!" });
+        }
 
-    let actor = ActorModel.getElementById(req.params.actorId);
-    if (!actor) {
-        return res.status(404).json({ status: false, error: "Ator não encontrado!"});
+        res.json({ status: true, oscar });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
     }
-
-    actor.oscars = actor.oscars || [];
-
-    if (!actor.oscars.includes(req.params.oscarId)) {
-        actor.oscars.push(req.params.oscarId);
-    }
-
-    res.json({ status: true, oscar});
 });
 
 module.exports = router;

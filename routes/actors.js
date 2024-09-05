@@ -32,14 +32,14 @@ router.get("/", (req, res) => {
     limite = Math.min(Math.max(parseInt(limite), 1), 10); 
     pagina = Math.max(parseInt(pagina), 1); 
 
-    const atores = ActorModel.listPaginated(limite, pagina);
+    const atores = ActorModel.listaPag(limite, pagina);
     res.json({ status: true, list: atores });
 });
 
 //middleware para procurar ator por id
 let getActor = (req, res, next) => {
     let id = req.params.id;
-    let actor = ActorModel.getElementById(id);
+    let actor = ActorModel.getActorById(id);
     if (actor == null) {
         return res.status(404).json({ status: false, error: "Ator não encontrado!" });
     }
@@ -54,30 +54,30 @@ router.get("/:id", verificarToken, getActor, (req, res) => {
 
 //rota para criar novo ator (somente para admins)
 router.post("/", verificaAdmin, validaAtor, (req, res) => {
-    res.json({ status: true, actor: ActorModel.new(req.name, req.birthYear)});
+    res.json({ status: true, actor: ActorModel.novoAtor(req.name, req.birthYear) });
 });
 
 //rota para atualizar dados de um ator existente
 router.put("/:id", verificaAdmin, validaAtor, (req, res) => {
-    res.json({ status: true, actor: ActorModel.update(req.params.id, req.name, req.birthYear) });
+    res.json({ status: true, actor: ActorModel.attAtor(req.params.id, req.name, req.birthYear) });
 });
 
 //rota para deletar um ator pelo seu ID
 router.delete("/:id", verificaAdmin, getActor, (req, res) => {
-    ActorModel.delete(req.params.id);
+    ActorModel.deletaAtor(req.params.id);
     res.json({ status: true, oldActor: req.actor });
 });
 
 //rota para associar um filme a um ator
 router.post("/:actorId/films/:filmId", verificaAdmin, (req, res) => {
 
-    let actor = ActorModel.filmeParaAtor(req.params.actorId, req.params.filmId);
+    let actor = ActorModel.filmePraAtor(req.params.actorId, req.params.filmId);
 
     if (!actor) {
         return res.status(404).json({ status: false, error: "Ator não encontrado!"});
     }
 
-    let film = FilmModel.getElementById(req.params.filmId);
+    let film = FilmModel.getFilmById(req.params.filmId);
 
     if (!film) {
         return res.status(404).json({ status: false, error: "Filme não encontrado!"});

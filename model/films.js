@@ -1,77 +1,110 @@
-let ids = 0;
-let films = [];
+const mongoose = require('mongoose');
 
-module.exports = {
+//esquema para criação de filme
+const filmSchema = new mongoose.Schema({
+  movie: { type: String, required: true },
+  director: { type: String, required: true },
+  nota: { type: Number, required: true },
+  actors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actor' }]
+});
 
-    //criação de novo log de filme
-    new(movie, director, nota = 1) {
-        let film = { id: ++ids, movie: movie, director: director, nota: nota, actors: [] };
-        films.push(film);
-        return film;
-    },
 
-    //atualização de dados de filme
-    update(id, movie, director, nota) {
-        let pos = this.getPositionById(id);
-        if (pos >= 0) {
-            films[pos].movie = movie;
-            films[pos].director = director;
-            films[pos].nota = nota;
-        }
-        return films[pos];
-    },
+filmSchema.statics = {
 
-    //lista os filmes
-    list() {
-        return films;
-    },
+  //criação de novo filme
+  async novoFilme(movie, director, nota) {
 
-    listPaginated(limite, pagina) {
-        const startIndex = (pagina - 1) * limite;
-        const endIndex = startIndex + limite;
-        return films.slice(startIndex, endIndex);
-    },
-
-    //lista os melhores filmes (filmes com nota 5 atribuída)
-    listMelhores() {
-        return films.filter(film => film.nota === 5);
-    },
-
-    //acha um filme pelo id
-    getElementById(id) {
-        let pos = this.getPositionById(id);
-        if (pos >= 0) {
-            return films[pos];
-        }
-        return null;
-    },
-
-    //identifica posição do filme pelo id
-    getPositionById(id) {
-        for (let i = 0; i < films.length; i++) {
-            if (films[i].id == id) {
-                return i;
-            }
-        }
-        return -1;
-    },
-
-    //deleta registros do filme
-    delete(id) {
-        let i = this.getPositionById(id);
-        if (i >= 0) {
-            films.splice(i, 1);
-            return true;
-        }
-        return false;
-    },
-
-    //inicializa os filmes
-    inicializaFilmes() {
-        films = [];
-        this.new("Forrest Gump", "Robert Zemeckis", 4);
-        this.new("The Wall", "Alan Parker", 5);
-        this.new("Stop Making Sense", "Jonathan Demme", 5);
-        this.new("Click", "Frank Coraci", 3);
+    try {
+      const film = new this({ movie, director, nota });
+      await film.save();
+      return film;
+    } catch (error) {
+      throw new Error('Erro ao criar filme: ' + error.message);
     }
+  },
+
+  //atualização dos dados de um filme
+  async attFilme(id, movie, director, nota) {
+    try {
+      const film = await this.findByIdAndUpdate(id, { movie, director, nota }, { new: true });
+      if (!film) {
+        throw new Error('Filme não encontrado');
+      }
+      return film;
+    } catch (error) {
+      throw new Error('Erro ao atualizar filme: ' + error.message);
+    }
+  },
+
+  //lista todos os filmes
+  async lista() {
+    try {
+      const films = await this.find();
+      return films;
+    } catch (error) {
+      throw new Error('Erro ao listar filmes: ' + error.message);
+    }
+  },
+
+  //lista os filmes utilizando paginação
+  async listaPag(limite, pagina) {
+    try {
+      const films = await this.find()
+        .skip((pagina - 1) * limite)
+        .limit(limite);
+      return films;
+    } catch (error) {
+      throw new Error('Erro ao listar filmes paginados: ' + error.message);
+    }
+  },
+
+  //lista os melhores filmes (nota 5)
+  async listaMelhores() {
+    try {
+      const films = await this.find({ nota: 5 });
+      return films;
+    } catch (error) {
+      throw new Error('Erro ao listar melhores filmes: ' + error.message);
+    }
+  },
+
+  //busca um filme pelo seu ID
+  async getFilmById(id) {
+    try {
+      const film = await this.findById(id);
+      if (!film) {
+        throw new Error('Filme não encontrado');
+      }
+      return film;
+    } catch (error) {
+      throw new Error('Erro ao buscar filme por ID: ' + error.message);
+    }
+  },
+
+  //deleta filme pelo ID
+  async deletaFilme(id) {
+    try {
+      const result = await this.findByIdAndDelete(id);
+      return !!result;
+    } catch (error) {
+      throw new Error('Erro ao deletar filme: ' + error.message);
+    }
+  },
+
+  //inicializa o programa com alguns filmes
+  async inicializaFilme() {
+    try {
+      await this.deleteMany({}); 
+      await this.novoFilme("Forrest Gump", "Robert Zemeckis", 4);
+      await this.novoFilme("The Wall", "Alan Parker", 5);
+      await this.novoFilme("Stop Making Sense", "Jonathan Demme", 5);
+      await this.novoFilme("Click", "Frank Coraci", 3);
+    } catch (error) {
+      throw new Error('Erro ao inicializar filmes: ' + error.message);
+    }
+  }
 };
+
+const FilmModel = mongoose.model('Film', filmSchema);
+
+module.exports = FilmModel;
