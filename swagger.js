@@ -6,9 +6,9 @@ const options = {
   definition: {
     openapi: '3.0.0', 
     info: {
-      title: 'API de Filmes', 
+      title: 'API - Filmes', 
       version: '1.0.0', 
-      description: 'Documentação da API de Filmes', 
+      description: 'Documentação da API de Log de Filmes', 
     },
     servers: [
       {
