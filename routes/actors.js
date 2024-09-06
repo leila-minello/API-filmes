@@ -44,7 +44,7 @@ router.use(verificarToken);
 
 /**
  * @swagger
- * /actors:
+ * /api/actors:
  *   get:
  *     summary: lista os atores com paginação
  *     description: retorna uma lista de atores utilizando paginação
@@ -122,7 +122,7 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /actors/{id}:
+ * /api/actors/{id}:
  *   get:
  *     summary: obtem um ator pelo ID
  *     description: retorna os detalhes de um ator específico com base em seu ID
@@ -197,7 +197,7 @@ router.get("/:id", getActor, (req, res) => {
 
 /**
  * @swagger
- * /actors:
+ * /api/actors:
  *   post:
  *     summary: cria um novo ator
  *     description: permite a criação de um novo registro de filme (apenas admins)
@@ -275,7 +275,7 @@ router.post("/", verificaAdmin, validaAtor, async (req, res) => {
 
 /**
  * @swagger
- * /actors/{id}:
+ * /api/actors/{id}:
  *   put:
  *     summary: atualiza dados de um ator existente
  *     description: atualiza os dados de um ator existente (somente admins)
@@ -375,7 +375,7 @@ router.put("/:id", verificaAdmin, validaAtor, async (req, res) => {
 
 /**
  * @swagger
- * /actors/{id}:
+ * /api/actors/{id}:
  *   delete:
  *     summary: deleta um ator pelo ID
  *     description: deleta um ator existente do banco de dados com base no seu ID (somente admins)
@@ -455,7 +455,7 @@ router.delete("/:id", verificaAdmin, getActor, async (req, res) => {
 
 /**
  * @swagger
- * /actors/{actorId}/films/{filmId}:
+ * /api/actors/{actorId}/films/{filmId}:
  *   post:
  *     summary: associa um filme já logado a um ator
  *     description: associa um filme já logado com um dos atores, indicando a participação do ator no filme (somente admins)

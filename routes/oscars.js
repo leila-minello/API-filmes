@@ -45,7 +45,7 @@ router.use(verificarToken);
 
 /**
  * @swagger
- * /:
+ * /api/oscars:
  *   get:
  *     summary: lista prêmios com paginação
  *     description: retorna uma lista de prêmios utilizando paginação
@@ -124,7 +124,7 @@ router.get("/", async (req, res) => {
 
 /**
  * @swagger
- * /{id}:
+ * /api/oscars/{id}:
  *   get:
  *     summary: obtem um prêmio pelo ID
  *     description: retorna os detalhes de um prêmio específico com base em seu ID
@@ -200,7 +200,7 @@ router.get("/:id", getOscar, (req, res) => {
 
 /**
  * @swagger
- * /:
+ * /api/oscars/:
  *   post:
  *     summary: cria um novo prêmio
  *     description: permite a criação de um novo registro de prêmio (apenas admins)
@@ -295,7 +295,7 @@ router.post("/", verificaAdmin, validaOscar, async (req, res) => {
 
 /**
  * @swagger
- * /{id}:
+ * /api/oscars/{id}:
  *   put:
  *     summary: atualiza dados de um prêmio existente
  *     description: atualiza os dados de um prêmio existente (somente admins)
@@ -412,7 +412,7 @@ router.put("/:id", verificaAdmin, validaOscar, getOscar, async (req, res) => {
 
 /**
  * @swagger
- * /{id}:
+ * /api/oscars/{id}:
  *   delete:
  *     summary: deleta um prêmio pelo ID
  *     description: deleta um prêmio existente do banco de dados com base no seu ID (somente admins)
@@ -511,7 +511,7 @@ router.delete("/:id", verificaAdmin, getOscar, async (req, res) => {
 
 /**
  * @swagger
- * /{oscarId}/films/{filmId}:
+ * /api/oscars/{oscarId}/films/{filmId}:
  *   post:
  *     summary: associa um filme a um prêmio
  *     description: associa um filme já logado a um prêmio com base em seus IDs.
@@ -612,7 +612,7 @@ router.post("/:oscarId/films/:filmId", verificaAdmin, async (req, res) => {
 
 /**
  * @swagger
- * /{oscarId}/actors/{actorId}:
+ * /api/oscars/{oscarId}/actors/{actorId}:
  *   post:
  *     summary: associa um ator a um prêmio
  *     description: associa um ator já logado a um prêmio com base em seus IDs.

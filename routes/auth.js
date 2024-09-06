@@ -32,7 +32,7 @@ function verificaAdmin(req, res, next) {
 
 /**
  * @swagger
- * /login:
+ * /api/auth/login:
  *   post:
  *     summary: realiza o login do usuário
  *     description: autentica o usuário por meio de um username e senha e retorna um token JWT para acesso futuro
@@ -125,7 +125,7 @@ router.post('/login', async (req, res) => {
 
 /**
  * @swagger
- * /registro:
+ * /api/auth/registro:
  *   post:
  *     summary: cadastra um novo usuário
  *     description: cadastra um novo usuário no sistema com suas informações (username e senha e indicação de permissão de adm)
@@ -231,7 +231,7 @@ router.post('/registro', async (req, res) => {
 
 /**
  * @swagger
- * /criaAdm:
+ * /api/auth/criaAdm:
  *   post:
  *     summary: cria um novo administrador
  *     description: permite a criação de um novo admin por um admin já existente
@@ -334,7 +334,7 @@ router.post('/criaAdm', verificarToken, verificaAdmin, async (req, res) => {
 
 /**
  * @swagger
- * /deletaUser/{id}:
+ * /api/auth/deletaUser/{id}:
  *   delete:
  *     summary: deleta um usuário pelo seu ID
  *     description: deleta um usuário do sistema por meio de seu ID (apenas admins)
@@ -432,7 +432,7 @@ router.delete('/deletaUser/:id', verificarToken, verificaAdmin, async (req, res)
 
 /**
  * @swagger
- * /alteraDados/{id}:
+ * /api/auth/alteraDados/{id}:
  *   put:
  *     summary: atualiza dados pessoais do usuário
  *     description: atualiza os dados de um usuário por meio de seu ID. (somente admins)
@@ -559,7 +559,7 @@ router.put('/alteraDados/:id', verificarToken, async (req, res) => {
 
 /**
  * @swagger
- * /verificaToken:
+ * /api/auth/verificaToken:
  *   post:
  *     summary: verifica o token JWT para login
  *     description: verifica a validade de um token JWT fornecido

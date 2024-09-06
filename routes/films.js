@@ -182,7 +182,7 @@ router.get("/melhores", async (req, res) => {
 
 /**
  * @swagger
- * /films/{id}:
+ * /api/films/{id}:
  *   get:
  *     summary: obtem um filme pelo ID
  *     description: retorna os detalhes de um filme específico com base em seu ID
@@ -261,7 +261,7 @@ router.get("/:id", getFilm, (req, res) => {
 
 /**
  * @swagger
- * /films:
+ * /api/films:
  *   post:
  *     summary: cria um novo filme
  *     description: permite a criação de um novo registro de filme (apenas admins)
@@ -340,7 +340,7 @@ router.post("/", verificaAdmin, validaFilme, async (req, res) => {
 
 /**
  * @swagger
- * /films/{id}:
+ * /api/films/{id}:
  *   put:
  *     summary: atualiza dados de um filme existente
  *     description: atualiza os dados de um filme existente (somente admins)
@@ -448,7 +448,7 @@ router.put("/:id", verificaAdmin, validaFilme, getFilm, async (req, res) => {
 
 /**
  * @swagger
- * /films/{id}:
+ * /api/films/{id}:
  *   delete:
  *     summary: deleta um filme pelo seu ID
  *     description: deleta um filme existente do banco de dados com base no seu ID (somente admins)

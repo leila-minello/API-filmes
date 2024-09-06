@@ -8,7 +8,7 @@ var UserModel = require("../model/user");
 
 /**
  * @swagger
- * /:
+ * /install:
  *   get:
  *     summary: inicializa o sistema com alguns filmes, atores, prêmios e cria um usuário administrador
  *     description: rota para inicializar alguns elementos do sistema, como alguns filmes, atores e um prêmio, e também um usuário administrador.

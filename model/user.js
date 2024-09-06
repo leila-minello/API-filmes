@@ -13,18 +13,20 @@ const User = mongoose.model('User', userSchema);
 module.exports = User;
 
 //criação de usuário admin na inicialização
-module.exports.createAdmin = async () => {
-    const admExiste = await User.findOne({username: process.env.USERNAME_ADM});
-    if (!admExiste) {
-        const admUser = new User ({
-            username: process.env.USERNAME_ADM,
-            senha: process.env.SENHA_ADM,
-            ehAdmin: true
-        });
-
-        await admUser.save();
-        console.log("Admin criado com sucesso!");
-    } else {
-        console.log("Admin já existe.");
+User.createAdmin = async function() {
+    try {
+        const adminExists = await this.findOne({ role: "admin" });
+        if (!adminExists) {
+            await this.create({
+                username: "admin",
+                senha: "admin123", // Defina uma senha padrão
+                role: "admin"
+            });
+            console.log("Usuário administrador criado com sucesso");
+        } else {
+            console.log("Usuário administrador já existe");
+        }
+    } catch (error) {
+        throw new Error("Erro ao criar o usuário administrador: " + error.message);
     }
 }
