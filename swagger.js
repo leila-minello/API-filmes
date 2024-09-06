@@ -1,18 +1,25 @@
-const swaggerAutogen = require('swagger-autogen')();
+// swagger.js
+const swaggerJsdoc = require('swagger-jsdoc');
 
-const doc = {
+// Configurações do Swagger
+const options = {
+  definition: {
+    openapi: '3.0.0', 
     info: {
-        title: 'API de Log de Filmes - CartaCaixa',
-        description:'Documentação da API usando Swagger Autogen'
+      title: 'API de Filmes', 
+      version: '1.0.0', 
+      description: 'Documentação da API de Filmes', 
     },
-
-    host: 'localhost:3000',
-    schemes: ['http'],
+    servers: [
+      {
+        url: 'http://localhost:3000', 
+      },
+    ],
+  },
+  
+  apis: ['./routes/*.js'], 
 };
 
-const outputFile = './swagger_output.json';
-const endpointsFiles = ['./app.js', './routes/*.js'];
+const swaggerSpec = swaggerJsdoc(options);
 
-swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-    require('./app');
-});
+module.exports = swaggerSpec;

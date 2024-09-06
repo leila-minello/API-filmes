@@ -29,7 +29,68 @@ let validaFilme = (req, res, next) => {
 
 router.use(verificarToken);
 
-//rota para listar filmes com paginação
+/**
+ * @swagger
+ * /api/films:
+ *   get:
+ *     summary: lista filmes com paginação
+ *     description: retorna uma lista de filmes utilizando paginação
+ *     tags: [Filmes]
+ *     parameters:
+ *       - in: query
+ *         name: limite
+ *         schema:
+ *           type: integer
+ *           default: 5
+ *           description: número máximo de filmes por página (10)
+ *       - in: query
+ *         name: pagina
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *           description: número da página atual
+ *     responses:
+ *       200:
+ *         description: lista de filmes retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   example: true
+ *                 list:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "66da00277075d81206b12fa9"
+ *                       movie:
+ *                         type: string
+ *                         example: "The Wall"
+ *                       director:
+ *                         type: string
+ *                         example: "Alan Parker"
+ *                       nota:
+ *                         type: integer
+ *                         example: 5
+ *       500:
+ *         description: erro ao gerar a listagem paginada dos filmes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: "Não foi possível gerar a listagem paginada dos filmes!"
+ */
 router.get("/", async (req, res) => {
     let { limite = 5, pagina = 1 } = req.query;
     
@@ -44,7 +105,55 @@ router.get("/", async (req, res) => {
     }
 });
 
-//rota para lista de melhores filmes (filmes com nota 5 atribuída)
+/**
+ * @swagger
+ * /api/films/melhores:
+ *   get:
+ *     summary: Lista os melhores filmes
+ *     description: Retorna uma lista dos filmes que receberam nota 5.
+ *     tags: [Filmes]
+ *     responses:
+ *       200:
+ *         description: Lista de filmes com nota 5 retornada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   example: true
+ *                 list:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "64e5ac7d5432d9bf0348afdc"
+ *                       movie:
+ *                         type: string
+ *                         example: "Inception"
+ *                       director:
+ *                         type: string
+ *                         example: "Christopher Nolan"
+ *                       nota:
+ *                         type: integer
+ *                         example: 5
+ *       500:
+ *         description: Erro ao listar os melhores filmes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: "Erro ao listar os melhores filmes."
+ */
 router.get("/melhores", async (req, res) => {
     try {
         const melhoresFilmes = await FilmModel.listaMelhores();

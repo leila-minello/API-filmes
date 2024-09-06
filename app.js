@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-var express = require('express');
+const express = require('express');
 var path = require('path');
 const app = express();
 const PORT = process.env.PORT;
 const swaggerUi = require('swagger-ui-express');
-const swaggerFile = require('./swagger_output.json');
+const swaggerSpec = require('./swagger');
 require('dotenv').config();
 
 //definindo routers
@@ -25,7 +25,7 @@ app.use("/api/actors", actorRouter);
 app.use("/api/oscars", oscarRouter);
 app.use("/api/auth", authRouter);
 app.use('/install', installRouter);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //teste do servidor
 app.listen(PORT, () => {
