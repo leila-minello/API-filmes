@@ -12,13 +12,13 @@ const User = mongoose.model('User', userSchema);
 
 module.exports = User;
 
-//criação de usuário admin
+//criação de usuário admin na inicialização
 module.exports.createAdmin = async () => {
     const admExiste = await User.findOne({username: process.env.USERNAME_ADM});
     if (!admExiste) {
         const admUser = new User ({
             username: process.env.USERNAME_ADM,
-            senha: process.env.adm1902,
+            senha: process.env.SENHA_ADM,
             ehAdmin: true
         });
 

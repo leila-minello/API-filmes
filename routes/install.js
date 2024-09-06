@@ -12,8 +12,7 @@ var UserModel = require("../model/user");
  *   get:
  *     summary: inicializa o sistema com alguns filmes, atores, prêmios e cria um usuário administrador
  *     description: rota para inicializar alguns elementos do sistema, como alguns filmes, atores e um prêmio, e também um usuário administrador.
- *     tags:
- *       - Configuração
+ *     tags: [Configuração]
  *     responses:
  *       200:
  *         description: instalação concluída com sucesso

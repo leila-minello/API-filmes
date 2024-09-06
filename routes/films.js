@@ -238,7 +238,7 @@ router.get("/melhores", async (req, res) => {
  *                 error:
  *                   type: string
  *                   description: mensagem de erro
- *                   example: filme não encontrado
+ *                   example: Filme não encontrado!
  *       500:
  *         description: erro interno do servidor
  *         content:
@@ -342,7 +342,7 @@ router.post("/", verificaAdmin, validaFilme, async (req, res) => {
  * @swagger
  * /films/{id}:
  *   put:
- *     summary: aualiza dados de um filme existente
+ *     summary: atualiza dados de um filme existente
  *     description: atualiza os dados de um filme existente (somente admins)
  *     tags:
  *       - Filmes
