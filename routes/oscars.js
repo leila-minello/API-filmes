@@ -35,7 +35,7 @@ let getOscar = async (req, res, next) => {
         req.oscar = oscar;
         next();
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 }
 
@@ -289,7 +289,7 @@ router.post("/", verificaAdmin, validaOscar, async (req, res) => {
         const oscar = await OscarModel.novoOscar(req.nomePremio, req.anoRecebimento);
         res.json({ status: true, oscar });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -406,7 +406,7 @@ router.put("/:id", verificaAdmin, validaOscar, getOscar, async (req, res) => {
         const oscar = await OscarModel.attOscar(req.params.id, req.nomePremio, req.anoRecebimento);
         res.json({ status: true, oscar });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -505,7 +505,7 @@ router.delete("/:id", verificaAdmin, getOscar, async (req, res) => {
         await OscarModel.deletaOscar(req.params.id);
         res.json({ status: true, oldOscar: req.oscar });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -606,7 +606,7 @@ router.post("/:oscarId/films/:filmId", verificaAdmin, async (req, res) => {
 
         res.json({ status: true, oscar });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -707,7 +707,7 @@ router.post("/:oscarId/actors/:actorId", verificaAdmin, async (req, res) => {
 
         res.json({ status: true, oscar });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 

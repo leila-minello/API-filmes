@@ -34,7 +34,7 @@ let getActor = async (req, res, next) => {
         req.actor = actor;
         next();
     } catch (error) {
-        return res.status(500).json({ status: false, error: error.message });
+        return res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 };
 
@@ -115,7 +115,7 @@ router.get("/", async (req, res) => {
         const atores = await ActorModel.listaPag(limite, pagina);
         res.json({ status: true, list: atores });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -269,7 +269,7 @@ router.post("/", verificaAdmin, validaAtor, async (req, res) => {
         const novoAtor = await ActorModel.novoAtor(req.name, req.birthYear);
         res.json({ status: true, actor: novoAtor });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -369,7 +369,7 @@ router.put("/:id", verificaAdmin, validaAtor, async (req, res) => {
         const atorAtualizado = await ActorModel.attAtor(req.params.id, req.name, req.birthYear);
         res.json({ status: true, actor: atorAtualizado });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -449,7 +449,7 @@ router.delete("/:id", verificaAdmin, getActor, async (req, res) => {
         await ActorModel.deletaAtor(req.params.id);
         res.json({ status: true, oldActor: req.actor });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -554,7 +554,7 @@ router.post("/:actorId/films/:filmId", verificaAdmin, async (req, res) => {
         await film.save();
         res.json({ status: true, actor });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 

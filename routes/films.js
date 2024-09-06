@@ -38,7 +38,7 @@ let getFilm = async (req, res, next) => {
         req.film = film;
         next();
     } catch (error) {
-        return res.status(500).json({ status: false, error: error.message });
+        return res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 };
 
@@ -176,7 +176,7 @@ router.get("/melhores", async (req, res) => {
         const melhoresFilmes = await FilmModel.listaMelhores();
         res.json({ status: true, list: melhoresFilmes });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -334,7 +334,7 @@ router.post("/", verificaAdmin, validaFilme, async (req, res) => {
         const novoFilme = await FilmModel.novoFilme(req.movie, req.director, req.nota);
         res.json({ status: true, film: novoFilme });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -442,7 +442,7 @@ router.put("/:id", verificaAdmin, validaFilme, getFilm, async (req, res) => {
         const filmeAtualizado = await FilmModel.attFilme(req.film.id, req.movie, req.director, req.nota);
         res.json({ status: true, film: filmeAtualizado });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
@@ -525,7 +525,7 @@ router.delete("/:id", verificaAdmin, getFilm, async (req, res) => {
         await FilmModel.deletaFilme(req.params.id);
         res.json({ status: true, oldFilm: req.film });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Erro no sistema!" });
     }
 });
 
