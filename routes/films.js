@@ -340,7 +340,7 @@ router.post("/", verificaAdmin, validaFilme, async (req, res) => {
 
 /**
  * @swagger
- * /api/films/{id}:
+ * api/films/{id}:
  *   put:
  *     summary: atualiza dados de um filme existente
  *     description: atualiza os dados de um filme existente (somente admins)
@@ -448,7 +448,7 @@ router.put("/:id", verificaAdmin, validaFilme, getFilm, async (req, res) => {
 
 /**
  * @swagger
- * /api/films/{id}:
+ * api/films/{id}:
  *   delete:
  *     summary: deleta um filme pelo seu ID
  *     description: deleta um filme existente do banco de dados com base no seu ID (somente admins)
