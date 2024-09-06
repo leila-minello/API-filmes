@@ -8,19 +8,10 @@ const doc = {
 
     host: 'localhost:3000',
     schemes: ['http'],
-    securityDefinitions: {
-        bearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
-        },
-    },
-
-    security: [{ bearerAuth: [] }],
 };
 
 const outputFile = './swagger_output.json';
-const endpointsFiles = ['./app.js'];
+const endpointsFiles = ['./app.js', './routes/*.js'];
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
     require('./app');

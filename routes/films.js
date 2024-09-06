@@ -40,7 +40,7 @@ router.get("/", async (req, res) => {
         const filmes = await FilmModel.listaPag(limite, pagina);
         res.json({ status: true, list: filmes });
     } catch (error) {
-        res.status(500).json({ status: false, error: error.message });
+        res.status(500).json({ status: false, error: "Não foi possível gerar fazer a listagem paginada dos filmes." });
     }
 });
 
@@ -69,10 +69,66 @@ let getFilm = async (req, res, next) => {
     }
 };
 
-//rota para pesquisar e obter filme por ID
+/** 
+ * @swagger
+ * /api/films/{id}
+ *     get:
+ *      summary: obter filme pelo seu ID
+ *      description: retorna os detalhes de um filme específico obtido pelo seu ID
+ *      tags: [Filmes]
+ *      parameters: 
+ *         - in: path
+ *         name: id
+ *         required: true
+ *         description: o ID do filme a ser pesquisado
+ *         schema:
+ *           type: string
+ *           example: "66da00277075d81206b12fa9"
+ *      responses:
+ *       200:
+ *         description: filme encontrado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   example: true
+ *                 film:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "66da00277075d81206b12fa9"
+ *                     movie:
+ *                       type: string
+ *                       example: "The Wall"
+ *                     director:
+ *                       type: string
+ *                       example: "Alan Parker"
+ *                     nota:
+ *                       type: integer
+ *                       example: 5
+ *       404:
+ *         description: filme não foi encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: "filme não encontrado!"
+ * 
+*/
 router.get("/:id", getFilm, (req, res) => {
     res.json({ status: true, film: req.film });
 });
+
 
 //rota para criar um novo filme (somente para admins)
 router.post("/", verificaAdmin, validaFilme, async (req, res) => {
