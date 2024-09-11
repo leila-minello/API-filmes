@@ -18,15 +18,15 @@ User.createAdmin = async function() {
         const adminExists = await this.findOne({ role: "admin" });
         if (!adminExists) {
             await this.create({
-                username: "admin",
-                senha: "admin123", // Defina uma senha padrão
-                role: "admin"
+                username: "admCartaCaixa",
+                senha: "adm1902", 
+                ehAdmin: true
             });
-            console.log("Usuário administrador criado com sucesso");
+            console.log("Admin criado com sucesso!");
         } else {
-            console.log("Usuário administrador já existe");
+            console.log("Admin já existe.");
         }
     } catch (error) {
-        throw new Error("Erro ao criar o usuário administrador: " + error.message);
+        throw new Error("Erro ao criar o admin!: " + error.message);
     }
 }
