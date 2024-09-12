@@ -16,6 +16,7 @@ function verificarToken(req, res, next) {
     try {
         const decoded = jwt.verify(token, chave);
         req.user = decoded;
+        console.log(req.user);
         next();
     } catch (error) {
         res.status(401).json({ status: false, error: 'Token inválido ou expirado.' });
@@ -115,8 +116,11 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ status: false, error: 'Login inválido! User ou senha errados.' });
         }
 
+        user.contadorLogin += 1;
+        await user.save();
+
         const token = jwt.sign({ message: 'LOG DE FILMES ABERTO', id: user._id, ehAdmin: user.ehAdmin }, chave, { expiresIn: '1h' });
-        res.json({ status: true, message: 'LOG DE FILMES ABERTO', token: token });
+        res.json({ status: true, message: 'LOG DE FILMES ABERTO', id: user.id, token: token, contador: user.contadorLogin });
 
     } catch (error) {
         res.status(500).json({ status: false, error: 'Erro na autenticação, tente novamente.' });
@@ -639,7 +643,20 @@ router.post('/verificaToken', (req, res) => {
     }
 });
 
+router.get('/contaAcessos', verificarToken, async (req, res) => {
 
+    try {
+
+        const user = await User.findById(req.user.id);
+        var contagem = user.contadorLogin;
+
+        res.json({ status: true, login: contagem });
+    }
+    
+    catch (error) {
+        res.status(401).json({ status: false, error: 'Não foi possível acessar os dados!'})
+    }
+});
 
 module.exports = {
     router,

@@ -5,7 +5,8 @@ require('dotenv').config();
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     senha: { type: String, required: true },
-    ehAdmin: { type: Boolean, default: false }
+    ehAdmin: { type: Boolean, default: false },
+    contadorLogin: { type: Number, default: 0}
 });
 
 const User = mongoose.model('User', userSchema);
@@ -20,7 +21,8 @@ User.createAdmin = async function() {
             await this.create({
                 username: "admCartaCaixa",
                 senha: "adm1902", 
-                ehAdmin: true
+                ehAdmin: true,
+                contadorLogin: 0
             });
             console.log("Admin criado com sucesso!");
         } else {
